@@ -1,0 +1,1 @@
+In this project, I have developed a navigation system using Django framework tailored to streamline the stock picking process in warehouses while seamlessly managing inventory levels. The system assists order pickers in locating stock within the warehouse using dynamic map interface and ensures accurate deductions from the stock purchaser account when item is picked.
