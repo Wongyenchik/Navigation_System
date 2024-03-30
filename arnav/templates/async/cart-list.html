@@ -1,0 +1,21 @@
+{% comment %} {% for product_id, item in cart_data.items %}
+        <tr class="pt-30" >
+            <td >
+                <button type="submit" class="delete-product" data-product="{{product_id}}">Remove</button>
+            </td >
+            <td >
+                <input type="hidden" value="{{product.product_id}}" class="product-id-{{product.product_id}}"> {% endcomment %}
+                {% comment %} <input type="text" value="{{item.name}}" class="product-name-{{product.product_id}}"> {% endcomment %}
+                {% comment %} <h4 class="text-body">{{item.id}} </h4>
+            </td>
+            <td >
+                <h4 class="text-body">{{item.name}} </h4>
+            </td>
+            <td >
+                <div >
+                <h4 class="text-body " >{{item.stock}} </h4>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+     {% endcomment %} 

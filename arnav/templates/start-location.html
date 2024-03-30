@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<nav class="mobile-nav">
+    <div class="nav-content1">
+        <div >
+            <a href="{% url 'cart' %}" style="text-decoration: none; "><i class="arrow right"></i>
+            </a>
+        </div>   
+        <div >
+        <a href="{% url 'log_out' %}" class="headerText1" >
+            <p class="picker-button" style="display: inline-block; vertical-align: middle;">Log out</p>
+            <img style="width: 50px; height: 50px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/logout-arrow.svg' %}" alt="#">
+        </a>
+        </div>
+    </div>
+</nav>
+<div class="error-message">
+    Please use mobile to continue.
+</div>
+<div class="formcontainer1 mobile-dissapear">
+    <img style="width: 100%; height: 50vh; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/UOW.png' %}" alt="#">
+
+        <h2 style="margin-bottom: 10px;">Select starting location</h2>
+        <button type="submit" class="depart-button submit-button" data-index="location1" onclick="window.location.href = '/navigation';" style="margin-bottom: 10px;">Location 1</button>
+        <button type="submit" class="depart-button submit-button" onclick="window.location.href = '/navigation';" data-index="location2">Location 2</button>
+  </div>
+
+
+{% endblock content %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<nav class="desk-nav">
+    <div class="nav-content">
+        <div class="form-block">
+        <a href="{% url 'index' %}" class="headerText" style="margin-top: 10px;"><i class="arrow right"></i></a>
+        <p class="headerText">Update Item Detail</p>
+        </div>
+        <div >
+            <a href="{% url 'log_out' %}" class="headerText1" >
+                <p class="picker-button" style="display: inline-block; vertical-align: middle; font-size: 30px;">Log out</p>
+                <img style="width: 50px; height: 50px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/logout-arrow.svg' %}" alt="#">
+            </a>
+        </div>      
+    </div>
+</nav>
+<div class="error-message-desk">
+    Please use desktop to continue.
+</div>
+  <div class="add-item-div" style="margin: 30px; border-radius: 5px; box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);">
+  <div style="padding: 30px;">
+          <div class="form-block">
+              <div class="form-labels">
+                  <label for="id_username">PRODUCT ID:</label>
+                  <label for="id_email">PRODUCT NAME:</label>
+                  <label for="id_password1">PRODUCT CATEGORY:</label>
+                  <label for="id_password2">STOCK:</label>
+              </div>
+              <div class="form-inputs">
+                  <input type="hidden" class="product-id-main" value="{{ product.product_id }}" name="product-id-main">
+                  <input type="text" class="product-id" value="{{ product.product_id }}" name="product_id">
+                  <input type="text" class="product-name" value="{{ product.product_name }}" name="product_name">
+                  <select name="product_category" class="product-category">
+                    {% for category_value, category_label in category_choices %}
+                        {% if category_value == product.product_category %}
+                            <option value="{{ category_value }}" selected>{{ category_label }}</option>
+                        {% else %}
+                            <option value="{{ category_value }}">{{ category_label }}</option>
+                        {% endif %}
+                    {% endfor %}
+                  </select>                  
+                  <input type="number" class="update-stock" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="0" step="1" value="{{ product.stock }}" name="stock">
+                  <button type="submit" class="btn btn-fill-out btn-block hover-up font-weight-bold update-detail-button" style="margin-top: 20px;" >Update Detail</button>
+              </div>
+          </div>
+  </div>
+  {% endblock content %}

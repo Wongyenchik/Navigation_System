@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<nav class="desk-nav">
+    <div class="nav-content">
+        <div class="form-block">
+            <a href="{% url 'index' %}" class="headerText" style="margin-top: 10px;"><i class="arrow right"></i></a>
+            <p class="headerText">Delete Product</p>
+            </div>
+            <div >
+                <a href="{% url 'log_out' %}" class="headerText1" >
+                    <p class="picker-button" style="display: inline-block; vertical-align: middle; font-size: 30px;">Log out</p>
+                    <img style="width: 50px; height: 50px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/logout-arrow.svg' %}" alt="#">
+                </a>
+            </div>      
+        </div>
+</nav>
+<div class="error-message-desk">
+    Please use desktop to continue.
+</div>
+  <div class="formcontainer1 add-item-div" >
+    <div class="wrapper1">
+        <p style="margin-bottom: 20px;"> Are you sure you want to delete {{product}}?</p>
+        <div class="form-group">
+            <button style="background: white;" class="cancel-button" onclick="window.location.href='{% url 'index'%}'">Cancel</button>
+        
+            <form method="post">
+                {% csrf_token %}
+                <button class="submit-button" type="submit" name="update">Confirm</button>
+            </form>
+        </div>
+  </div>
+  {% endblock content %}

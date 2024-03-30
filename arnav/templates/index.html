@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% comment %} Order Picker {% endcomment %}
+{% if request.user.account_type == "orderpicker" %}
+<nav class="mobile-nav">
+    <div class="nav-content1">
+        <div >
+            <a href="{% url 'scan-pick' %}" style="text-decoration: none; padding-bottom: 10px;">
+                <img style="width: 30px; height: 30px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/scan-icon.svg' %}" alt="#">
+                <p class="picker-button" style="display: inline-block; vertical-align: middle; margin-left: 5px;">Scan Picked Item</p>
+            </a>
+        </div>   
+        <div >
+        <a href="{% url 'log_out' %}" class="headerText1" >
+            <p class="picker-button" style="display: inline-block; vertical-align: middle;">Log out</p>
+            <img style="width: 50px; height: 50px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/logout-arrow.svg' %}" alt="#">
+        </a>
+        </div>
+    </div>
+</nav>
+<div class="error-message">
+    Please use mobile to continue.
+</div>
+
+<div class="container3" style="margin-bottom: -30px;">
+<form  method="GET">
+    <input class="search1" type="text" placeholder="Search for items by enter ID or NAME" name="q" style="width: 100%;"/>
+</form>
+<p style="margin-bottom: 5px;">Often pick combination</p>
+
+<div style="overflow-x: auto; overflow-y: auto; max-height: 55vh;">
+    {% for list in productList %}
+            <div class="product-container">
+                <button type="submit" class="add-to-pick-list-btn">{{list.product}}</button>
+                {% for item in list.productlistitem_set.all %}
+                    <input type="hidden" value="{{ item.product_name }}" class="item-name">
+                    <input type="hidden" value="{{ item.product_id }}" class="item-id">
+                    <input type="hidden" value="{{ item.stock }}" class="stock">
+                    <input type="hidden" value="{{ item.product_category }}" class="category">
+                    <input type="hidden" value="{{ item.location }}" class="location">
+                    <input type="hidden" value="{{ item.image }}" class="image">
+
+                {% endfor %}
+            </div>
+{% endfor %}
+<hr style="margin-top: 10px;">
+    <table style="width: 100%;">
+        <tbody>
+            {% for product in product %}
+            <tr  >
+                <td  class="table-data2">
+                    <button type="submit" class="add-to-pick-btn" data-index="{{ product.product_id }}" {% if product.stock == 0 %}disabled{% endif %}>Add</button>
+                </td >
+                <td  class="table-data2">
+                    <input type="hidden" value="{{product.product_name}}" class="product-name-{{product.product_id}}">
+                    <input type="hidden" value="{{product.stock}}" class="product-stock-{{product.product_id}}">
+                    <input type="hidden" value="{{product.product_category}}" class="product-category-{{product.product_id}}">
+                    <input type="hidden" value="{{product.location}}" class="product-location-{{product.product_id}}">
+                    <input type="hidden" value="{{product.image}}" class="product-image-{{product.product_id}}">
+
+                    <p class="text-body">{{product.product_name}} </p>
+
+                    <p class="text-id " style="font-size: 13px;">{{product.product_id}} </p>
+                </td>
+                <td  class="table-data2">
+                    <h4 style="margin-left: 40px;" class="text-body " >{{product.stock}} </h4>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if message1 %}
+<h4 style="margin: 10px 0px 0px 0px; color: red;">{{ message1 }}</h4>
+{% endif %}
+</div>
+
+<div class="fixed-bottom">
+    <div class="cart-items-container">
+        <p class="cart-items-count" style="margin-left: 20px; color: green;">{{ request.session.cart_data_obj|length }}</p>
+        <p class="selected-text">selected</p>
+    </div>
+    
+    <button class="select-item" type="submit" onclick="window.location.href = '/cart';" >View selected items</button> 
+</div>
+</div>
+
+</div>    
+
+{% comment %} Stock purchaser {% endcomment %}
+{% elif request.user.account_type == "stockpurchaser" %}
+<nav class="desk-nav">
+    <div class="nav-content">
+        <a class="headerText" href="{% url 'index' %}" >Homepage</a>
+        <div >
+            <a href="{% url 'log_out' %}" class="headerText1" >
+                <p class="picker-button" style="display: inline-block; vertical-align: middle; font-size: 30px;">Log out</p>
+                <img style="width: 50px; height: 50px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/logout-arrow.svg' %}" alt="#">
+            </a>
+        </div>    
+    </div>
+</nav>
+<div class="error-message-desk">
+    Please use desktop to continue.
+</div>
+<div class="container1" style="margin-bottom: -30px;">
+    <form method="GET">
+        <input class="search"type="text" placeholder="Search for items by enter ID or NAME" name="q" style="width: 100%;">
+    </form>
+    <button class="add-button" type="button" onclick="window.location.href = '/add-item';" >Add item</button>
+
+</div>
+
+<div  id="filtered-product" style="width: 100%; overflow-x: auto; overflow-y: auto; max-height: 53vh; ">
+
+    <table style="width: 100%; padding: 0px 40px 0px 40px;">
+        <thead>
+            <tr class="main-heading">
+                <th scope="col">CATEGORY</th>
+                <th scope="col">ID</th>
+                <th scope="col">NAME</th>
+                <th scope="col">AVAILABLE STOCKS</th>
+                <th scope="col">ADD STOCKS</th>
+                <th scope="col">MORE</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in product %}
+            <tr >
+                    <input class="update-box" style="display: none;" data-filter="product" type="checkbox" name="checkbox" id="exampleCheckbox1" value="{{product.product_id}}"> 
+                    <td >
+                        <h4 class="table-data">{{product.get_product_category_display}} </h4>
+                    </td>
+                    <td >
+                    <h4 class="table-data">{{product.product_id}} </h4>
+                </td>
+                <td >
+                    <h4 class="table-data">{{product.product_name}} </h4>
+                </td>
+                
+                <td >
+                    {% if product.stock < 10 %}
+                    <h4 style="color: red;"class="table-data">{{product.stock}} </h4>
+                    {% else %}
+                    <h4 class="table-data">{{product.stock}} </h4>
+                    {%endif %}
+                </td >    
+                <td >
+                <div class="table-data">
+                    <input type="number" class="qty-input" placeholder="0" step="1" data-filter="stock" value=0 min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57"> 
+                </div>
+                </td>
+                <td >
+                    <div class="table-data1">
+                        <div style="margin-left: 20px;"class="dropdown">
+                            <img style="width: 30px; height: 30px;"  src="{% static 'assets/imgs/theme/three-dots.svg' %} " alt="#">
+                            <div class="dropdown-content">
+                              <a href="{%url 'update-detail' product.product_id%}">Update Detail</a>
+                              <a style="color:red;" href="{%url 'delete-product' product.product_id%}">Delete item</a>
+                            </div>
+                        </div>
+                    </div>
+                    </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% if message1 %}
+<h4 style="margin: 10px 0px 0px 50px; color: red;">{{ message1 }}</h4>
+{% endif %}
+<button class="update-checkbox update-button" type="button"  >Update item</button>
+
+{% comment %} Admin {% endcomment %}
+{% elif request.user.account_type == "admin" %}
+<nav class="desk-nav">
+    <div class="nav-content">
+        <a class="headerText" href="{% url 'index' %}" >Homepage</a>
+        <div >
+            <a href="{% url 'log_out' %}" class="headerText1" >
+                <p class="picker-button" style="display: inline-block; vertical-align: middle; font-size: 30px;">Log out</p>
+                <img style="width: 50px; height: 50px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/logout-arrow.svg' %}" alt="#">
+            </a>
+        </div>      
+    </div>
+</nav>
+<div class="error-message-desk">
+    Please use desktop to continue.
+</div>
+<div class="container1" style="margin-bottom: -30px;">
+    <form method="GET">
+        <input class="search"type="text" placeholder="Search for user by enter USERNAME or EMAIL" name="a" style="width: 100%;">
+    </form>
+    <button class="add-button"type="button" onclick="window.location.href = '/add-user';">Add user</button>
+</div>
+
+<div class="table-responsive shopping-summery" id="filtered-product" style="width: 100%; overflow-x: auto; overflow-y: auto; max-height: 60vh; ">
+    <table style="width: 100%; padding: 0px 40px 0px 40px;">
+        <thead>
+            <tr class="main-heading">
+                <th scope="col">USERNAME</th>
+                <th scope="col">EMAIL</th>
+                <th scope="col">ACCOUNT TYPE</th>
+                <th scope="col">ACTIONS</th> <!-- Added a column for actions -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in user %}
+            <tr >
+                <td>
+                    <h4 class="table-data">{{user.username}}</h4>
+                </td>
+                <td>
+                    <h4 class="table-data">{{user.email}}</h4>
+                </td>
+                <td>
+                    <h4 class="table-data">{{user.get_account_type_display}}</h4>
+                </td>
+                <td>
+                    <div class="table-data">
+                        <a  href="{% url 'delete-user' user.email %}"><img style="width: 23px; height: 23px;" src="{% static 'assets/imgs/theme/delete-button.svg' %}" alt="#"></a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if message %}
+    <h3 style="margin: 10px 0px 0px 50px; color: red;">{{ message }}</h3>
+{% endif %}
+</div>
+
+{% endif %}
+
+{% endblock content %}

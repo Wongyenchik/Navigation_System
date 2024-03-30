@@ -1,0 +1,661 @@
+{% load static %}
+<html lang="en" dir="ltr">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins',sans-serif;
+    }
+    .container1{
+      display: flex;
+      align-items: center;
+      padding: 40px;    }
+      .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .add-to-pick-list-btn{
+      border-radius: 10px;
+      background: #7FDCF1;
+      border: 1px solid black;
+      padding: 5px;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+    .select-item {
+      width: 100%;
+      background: #7FDCF1;
+      border: 1px solid black;
+      height: 8vh;
+  }
+  .select-item3 {
+    width: 100%;
+    border: 1px solid black;
+    height: 8vh;
+}
+  .select-item1 {
+    width: 49vw;
+    background: #7FDCF1;
+    border: 0px solid black;
+    height: 8vh;
+}
+.select-item2 {
+  width: 49vw;
+  background: #FF0000;
+  border: 0px solid black;
+  height: 8vh;
+  color: white;
+}
+
+
+.button-container button {
+  display: inline-block; /* Display the buttons side by side */
+}
+
+  .fixed-bottom{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+  }
+  .cart-items-container {
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Align items vertically */
+}
+
+.cart-items-count, .selected-text {
+    display: inline-block; /* Display elements side by side */
+    margin-right: 5px; /* Add space between the elements */
+}
+
+    .product-container{
+      display: inline-block;
+
+    }
+    
+    .container2{
+      display: flex;
+      align-items: center;
+      padding: 40px;    }
+      
+      .container3{
+        padding: 20px;    }
+        
+      .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-content1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+    .desk-nav {
+      padding: 30px;
+      box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+  }
+  .mobile-nav {
+    padding: 15px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+}
+  .error-message-desk{
+    display: none;
+  }
+  .picker-button {
+    font-size: 14px;
+    color: black;
+  }
+  .formcontainer{
+    padding-top: 60px; 
+    padding-left:60px; 
+    padding-right: 60px;
+  }
+  .formcontainer1{
+    padding-top: 60px; 
+    {% comment %} padding-left:auto; 
+    padding-right: auto; {% endcomment %}
+    width: fit-content;
+    margin: 0 auto; /* Set left and right margins to auto to center horizontally */
+
+  }
+    /* Define a media query for screen sizes smaller than desktop */
+@media only screen and (max-width: 768px) {
+    #filtered-product,
+    .update-button,.nav-content,.desk-nav {
+        display: none; !important;
+    }
+    .container1, .add-item-div{
+      display: none; !important;
+    }
+    .error-message-desk{
+      display: block;
+      text-align: center;
+      padding: 20px;
+      color: red;
+    }
+}
+.error-message{
+  display: none;
+}
+@media only screen and (min-width: 767px) {
+  .error-message {
+      display: block; /* Show the error message only on mobile screens */
+      color: red;
+      text-align: center;
+      padding: 20px;
+
+  }
+  .nav-content1,.mobile-nav,.container3,.fixed-bottom, .mobile-dissapear{
+    display: none;
+  }
+
+}
+
+    body{
+      overflow: hidden;
+    }
+    ::selection{
+      background: rgba(26,188,156,0.3);
+    }
+    .container{
+      max-width: 440px;
+      padding: 0 20px;
+      margin: 170px auto;
+    }
+    .wrapper{
+      width: 100%;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
+    }
+    .wrapper1{
+      width: 100%;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
+      padding: 40px;
+      align: center;
+    }
+
+    {% comment %} .form-group.mb-30 a,  {% endcomment %}
+    .form-group {
+      display: flex; /* Use flexbox */
+      justify-content: space-between; /* Space items evenly along the main axis */
+  }
+  
+    .submit-button {
+        width: 100%; /* Set the width of both the anchor and button to 50% */
+        display: inline-block; /* Make them display inline so they sit side by side */
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        background: #7FDCF1;
+        border: 1px solid #7FDCF1;
+        border-radius: 10px;
+        height: 40px;
+    }
+    /* Hamburger menu styles */
+    .hamburger-menu {
+        display: block;
+        cursor: pointer;
+    }
+    
+    .hamburger-bar {
+        width: 25px;
+        height: 3px;
+        background-color: #333;
+        margin: 5px 0;
+    }
+    
+    /* Table styles */
+    #product-table {
+        display: none;
+    }
+    
+    #product-table.show-table {
+        display: table;
+    }
+    #product-picking.hide-table{
+      display: none;
+    }
+        
+    .submit-button:hover {
+      background: #72C2D4;
+
+    }
+
+     .cancel-button {
+      width: 49%;
+      display: inline-block;
+      box-sizing: border-box;
+      background: white;
+      border: 1px solid #7FDCF1;
+      border-radius: 10px;
+      height: 40px;
+      cursor: pointer; /* Add cursor pointer */
+  }
+  
+  .cancel-button:hover {
+    background: #72C2D4 !important;
+  }
+  
+    
+    .wrapper .title{
+      height: 90px;
+      background: #80DCF1;
+      border-radius: 5px 5px 0 0;
+      color: #fff;
+      font-size: 30px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wrapper form{
+      padding: 30px 25px 25px 25px;
+    }
+    .wrapper form .row{
+      height: 45px;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    .wrapper form .row1{
+      height: 45px;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .wrapper form .row input{
+      height: 100%;
+      width: 100%;
+      outline: none;
+      padding-left: 60px;
+      border-radius: 5px;
+      border: 1px solid lightgrey;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    .wrapper form .row1 input{
+      height: 100%;
+      width: 100%;
+      outline: none;
+      border-radius: 5px;
+      border: 1px solid lightgrey;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    form .row input:focus{
+      border-color: #80DCF1;
+      box-shadow: inset 0px 0px 2px 2px rgba(26,188,156,0.25);
+    }
+    form .row input::placeholder{
+      color: #999;
+    }
+    .wrapper form .row i{
+      position: absolute;
+      width: 47px;
+      height: 100%;
+      color: #fff;
+      font-size: 18px;
+      background: #80DCF1;
+      border: 1px solid #80DCF1;
+      border-radius: 5px 0 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wrapper form .pass{
+      margin: -8px 0 20px 0;
+    }
+    .wrapper form .pass a{
+      color: #45AAC1;
+      font-size: 17px;
+      text-decoration: none;
+    }
+    .wrapper form .pass a:hover{
+      text-decoration: underline;
+    }
+    .wrapper form .button input{
+      color: #fff;
+      font-size: 20px;
+      font-weight: 500;
+      padding-left: 0px;
+      background: #7FDCF1;
+      border: 1px solid #7FDCF1;
+      cursor: pointer;
+    }
+    form .button input:hover{
+      background: #72C2D4;
+    }
+    .wrapper form .signup-link{
+      text-align: center;
+      margin-top: 20px;
+      font-size: 17px;
+    }
+    .wrapper form .signup-link a{
+      color: #45AAC1;
+      text-decoration: none;
+    }
+    form .signup-link a:hover{
+      text-decoration: underline;
+    }
+
+    .wrapper form .custbutton input{
+
+        outline: none;
+        padding: 10px 20px 10px 20px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 500;
+        background: #7FDCF1;
+        border: 1px solid #7FDCF1;
+        cursor: pointer;
+      }
+    
+    form .custbutton input:hover{
+        background: #72C2D4;
+    }
+
+  
+ 
+    .wrapper form .custrow {
+        height: 45px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .wrapper form .label-block {
+        flex: 1;
+        text-align: left;
+    }
+    
+    .wrapper form .input-block {
+        flex: 6;
+        text-align: right;
+    }
+    
+    .wrapper form .custrow p {
+        font-size: 20px;
+        font-weight: 400;
+    }
+    
+    .wrapper form .custrow input {
+        height: 100%;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid lightgrey;
+        font-size: 16px;
+        padding-left: 20px;
+        width: 100%; /* Expand the input to fill the available space */
+    }
+    .arrow {
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 10px;
+        margin-right: 20px;
+        margin-left: 10px;
+      }
+      .arrow1 {
+        
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 10px;
+        margin-right: 20px;
+        margin-left: 10px;
+      }
+    
+    .left {
+        transform: rotate(55deg);
+        -webkit-transform: rotate(315deg);
+    }
+    .right {
+      transform: rotate(3deg);
+      -webkit-transform: rotate(135deg);
+  }
+
+    .headerText {
+        font-size: 30px;
+        font-weight: 400;
+        text-decoration: none;
+        color: black;
+    }
+    .headerText1 {
+      font-size: 17px;
+      font-weight: 400;
+      text-decoration: none;
+      color: black;
+      margin-top: -16px;
+  }
+    .logOut{
+        font-size: 30px;
+        font-weight: 400;
+        text-decoration: none; 
+        color: black;
+    }
+
+    
+
+    .custbutton input{
+
+        outline: none;
+        padding: 10px 20px 10px 20px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 500;
+        background: #7FDCF1;
+        border: 1px solid #7FDCF1;
+        cursor: pointer;
+      }
+    
+    .custbutton input:hover{
+        background: #72C2D4;
+    }
+    .dropbtn {
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown-content a:hover {background-color: #ddd;}
+    
+    .dropdown:hover .dropdown-content {display: block;}
+    .not-visible {display: none;}
+      .container1 {
+      }
+  
+      form {
+          flex: 1; /* Take remaining space */
+          margin-right: 10px; /* Add some space between form and button */
+          border-radius: 40px;
+
+      }
+      .align-center{
+        text-align: center
+      }
+      .search{
+        width: 100%;
+        height: 60px; /* Adjust the height as needed */
+        border-radius: 8px; /* Adjust the border radius as needed */
+        border: 1px solid #ccc; /* Add border */
+        padding: 5px 10px; /* Add padding */
+        box-sizing: border-box; /* Include padding and border in width */
+        font-size: 17px; /* Adjust the font size as needed */
+
+    }
+    .search1{
+      width: 100%;
+      height: 60px; /* Adjust the height as needed */
+      border-radius: 8px; /* Adjust the border radius as needed */
+      border: 1px solid #ccc; /* Add border */
+      box-sizing: border-box; /* Include padding and border in width */
+      font-size: 17px; /* Adjust the font size as needed */
+
+  }
+  .search1::placeholder {
+    font-size: 14px; /* Adjust the placeholder font size as needed */
+    color: #999; /* Adjust the placeholder color if needed */
+}
+
+    .search::placeholder {
+      font-size: 17px; /* Adjust the placeholder font size as needed */
+      color: #999; /* Adjust the placeholder color if needed */
+  }
+
+  
+      .add-button {
+          width: 100px; /* Fixed width for the button */
+          height: 60px; 
+          margin-top: -10px;
+          font-size: 15px;
+          background: #7FDCF1;
+          border: 1px solid #7FDCF1;
+          border-radius: 8px; /* Adjust the border radius as needed */
+        }
+        .update-button {
+          width: 100px; /* Fixed width for the button */
+          height: 60px; 
+          font-size: 15px;
+          background: #7FDCF1;
+          border: 1px solid #7FDCF1;
+          border-radius: 8px; /* Adjust the border radius as needed */
+        }
+      .main-heading{
+        background:#7FDCF1;
+        height: 50px;}
+      .table-data{
+        font-size: 16px; /* Adjust the font size */
+        color: #333; /* Set the text color */
+        padding: 30px; /* Add padding to the table data */
+        border-bottom: 1px solid #676a6e; /* Add a bottom border for separation */
+        text-align: center;
+        justify-content: center; /* Center horizontally */
+          }
+      .table-data2{
+        border-bottom: 1px solid #676a6e; /* Add a bottom border for separation */
+        padding: 5px;
+      }
+      .table-data1{
+        font-size: 16px; /* Adjust the font size */
+        color: #333; /* Set the text color */
+        padding: 27px; /* Add padding to the table data */
+        border-bottom: 1px solid #676a6e; /* Add a bottom border for separation */
+        text-align: center;
+        justify-content: center; /* Center horizontally */
+          }
+          .table-row {
+            display: flex; /* Use flexbox to make all elements within the row align horizontally */
+            align-items: center; /* Align items vertically in the center */
+            justify-content: space-between; /* Distribute items evenly along the row */
+            padding: 10px; /* Add padding as needed */
+            width: 100%;
+        }
+        
+        .table-data1 {
+            display: flex; /* Use flexbox for the table data */
+            {% comment %} align-items: center; /* Align items vertically in the center */ {% endcomment %}
+        }
+        
+        .table-data1 h4 {
+            margin-right: 10px; /* Adjust margin between elements as needed */
+        }
+          .form-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .form-labels {
+            flex: 1;
+        }
+        
+        .form-inputs {
+            flex: 2;
+            margin-left: 20px; /* Adjust as needed for spacing */
+            font-size: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #7FDCF1;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #6db8c9;
+        }
+           
+        .update-button {
+          position: relative; /* Keep the button in the document flow */
+          margin-top: 20px; /* Adjust the top margin as needed */
+          margin-bottom: 20px; /* Adjust the bottom margin as needed */
+          margin-left: 40px; /* Add margin to the right side */
+
+        }
+</style>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{% static './assets/js/function.js' %}"></script>
+
+    <title>hahah</title>
+  </head>
+<body>
+{% block content %}
+{% endblock content %}
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<nav class="mobile-nav">
+    <div class="nav-content1">
+        <div >
+            <a href="{% url 'index' %}" style="text-decoration: none; "><i class="arrow right"></i>
+            </a>
+        </div>   
+        <div >
+        <a href="{% url 'log_out' %}" class="headerText1" >
+            <p class="picker-button" style="display: inline-block; vertical-align: middle;">Log out</p>
+            <img style="width: 50px; height: 50px; display: inline-block; vertical-align: middle;" src="{% static 'assets/imgs/theme/logout-arrow.svg' %}" alt="#">
+        </a>
+        </div>
+    </div>
+</nav>
+<div class="error-message">
+    Please use mobile to continue.
+</div>
+<div class="container3" style="margin-bottom: -30px;">
+    <div style="overflow-x: auto; overflow-y: auto; max-height: 70vh;">
+<table style="width: 100%;">
+    <tbody id="cart-list">
+        {% for product_id, item in cart_data.items %}
+        <tr  >
+            <td  class="table-data2">
+                <button type="submit" class="delete-product" data-product="{{product_id}}">Remove</button>
+            </td >
+            <td  class="table-data2">
+                <p class="prod-name-{{product_id}}">{{item.name}} </p>
+                <p style="font-size: 13px;"class="prod-id-{{product_id}}">{{item.id}} </p>
+                
+            </td>
+            <td  class="table-data2">
+                <h4 class="prod-stock-{{product_id}}" >{{item.stock}} </h4>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+
+
+</div>
+
+<div class="fixed-bottom">
+    
+    <button class="select-item create-list" type="submit" onclick="window.location.href = '/start-location';" >Start Navigation</button> 
+
+</div>
+
+{% endblock content %}
+
+
